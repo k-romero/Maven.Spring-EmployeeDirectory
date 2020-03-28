@@ -16,20 +16,33 @@ public class Employee {
     private String phoneNumber;
     private String email;
     private String hireDate;
-    private Integer managerId;
     private Integer deptNumber;
+
+    @OneToOne
+    private Employee manager;
 
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String title, String phoneNumber, String email, String hireDate, Integer managerId, Integer deptNumber) {
+    public Employee(String firstName, String lastName, String title, String phoneNumber, String email, String hireDate, Employee manager, Integer deptNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.title = title;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.hireDate = hireDate;
-        this.managerId = managerId;
+        this.manager = manager;
+        this.deptNumber = deptNumber;
+    }
+
+    public Employee(String firstName, String lastName, String title, String phoneNumber, String email, String hireDate, Integer deptNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.title = title;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.hireDate = hireDate;
+        this.manager = manager;
         this.deptNumber = deptNumber;
     }
 
@@ -97,12 +110,12 @@ public class Employee {
     }
 
     @Column(name = "MANAGER_ID")
-    public Integer getManagerId() {
-        return managerId;
+    public Employee getManager() {
+        return manager;
     }
 
-    public void setManager(Integer managerId) {
-        this.managerId = managerId;
+    public void setManager(Employee manager) {
+        this.manager = manager;
     }
 
     @Column(name = "DEPT_NUMBER")

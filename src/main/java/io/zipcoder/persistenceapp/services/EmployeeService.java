@@ -30,7 +30,8 @@ public class EmployeeService {
         originalEmployee.setLastName(newEmp.getLastName());
         originalEmployee.setDeptNumber(newEmp.getDeptNumber());
         originalEmployee.setEmail(newEmp.getEmail());
-        originalEmployee.setManager(newEmp.getManagerId());
+        //TODO fix this to be Employee
+//        originalEmployee.setManager(newEmp.getManagerId());
         originalEmployee.setPhoneNumber(newEmp.getPhoneNumber());
         originalEmployee.setTitle(newEmp.getPhoneNumber());
         originalEmployee.setHireDate(newEmp.getHireDate());
@@ -51,7 +52,7 @@ public class EmployeeService {
 
     public Employee updateEmpManager(Integer id, Integer managerId){
         Employee originalEmployee = repository.findOne(id);
-        originalEmployee.setManager(managerId);
+        originalEmployee.setManager(repository.findOne(managerId));
         return repository.save(originalEmployee);
     }
 
@@ -83,6 +84,16 @@ public class EmployeeService {
         Employee originalEmployee = repository.findOne(id);
         originalEmployee.setPhoneNumber(phone);
         return repository.save(originalEmployee);
+    }
+
+    public Employee setManager(Integer employeeId, Integer managerId){
+        Employee emp = repository.findOne(employeeId);
+        emp.setManager(repository.findOne(managerId));
+        return repository.save(emp);
+    }
+
+    public Employee getManager(Integer empId){
+        return repository.findOne(empId).getManager();
     }
 
 

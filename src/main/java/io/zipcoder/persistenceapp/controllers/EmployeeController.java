@@ -81,4 +81,20 @@ public class EmployeeController {
     }
 
 
+    // ------------------ MANAGER GET/SET
+
+
+    @RequestMapping("/API/getEmp/manager/{id}")
+    public ResponseEntity<Employee> getEmpManager(@PathVariable Integer id){
+        return new ResponseEntity<>(service.getManager(id),HttpStatus.OK);
+    }
+
+    //TODO change method name to update once resolved
+
+    @PutMapping("/API/update/emp/manager/{empId}")
+    public ResponseEntity<Employee> setManager(@PathVariable Integer empId, @RequestParam Integer managerId){
+        return new ResponseEntity<>(service.setManager(empId,managerId),HttpStatus.OK);
+    }
+
+
 }
