@@ -13,26 +13,24 @@ public class DepartmentController {
     @Autowired
     DepartmentService service;
 
-    @GetMapping("/API/show/dept/{deptNumber}")
+    @GetMapping("/API/dept/show/{deptNumber}")
     public ResponseEntity<Department> show(@PathVariable Integer deptNumber){
         return new ResponseEntity<>(service.show(deptNumber), HttpStatus.OK);
     }
 
-    @PostMapping("/API/create/dept")
+    @PostMapping("/API/dept/create")
     public ResponseEntity<Department> create(@RequestBody Department dept){
         return new ResponseEntity<>(service.create(dept),HttpStatus.CREATED);
     }
 
-    @PutMapping("/API/update/deptName/{deptNumber}")
+    @PutMapping("/API/dept/updateName/{deptNumber}")
     public ResponseEntity<Department> update(@RequestParam String deptName, @PathVariable Integer deptNumber){
         return new ResponseEntity<>(service.updateName(deptNumber,deptName),HttpStatus.OK);
     }
 
-    @PutMapping("/API/update/deptManager/{id}")
+    @PutMapping("/API/dept/updateManager/{id}")
     public ResponseEntity<Department> updateManager(@RequestParam Integer managerId, @PathVariable Integer id){
         return new ResponseEntity<>(service.updateManager(id,managerId), HttpStatus.OK);
     }
-
-
 
 }
