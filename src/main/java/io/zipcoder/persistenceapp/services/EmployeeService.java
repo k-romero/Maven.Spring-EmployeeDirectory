@@ -114,6 +114,20 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    public ArrayList<Employee> getAllEmpsByManager(Integer managerId){
+        ArrayList<Employee> allEmps = (ArrayList<Employee>) index();
+        ArrayList<Employee> result = new ArrayList<>();
+        for (Employee e : allEmps) {
+            if(e.getManager() != null){
+                if(e.getManager().getId() == managerId){
+                    result.add(e);
+                }
+            }
+
+        }
+        return result;
+    }
+
     public boolean removeEmpsFromDept(Integer deptNumber, Integer newDeptNum){
         getAllEmpsByDept(deptNumber).stream().forEach(employee -> {
             employee.setDeptNumber(newDeptNum);
@@ -133,4 +147,5 @@ public class EmployeeService {
     public String getEmpEmail(Integer empId){
         return repository.findOne(empId).getEmail();
     }
+
 }

@@ -93,7 +93,7 @@ public class EmployeeController {
 
     //TODO change method name to update once resolved
 
-    @PutMapping("/API/emp/updateManager/{empId}")
+    @PutMapping("/API/emp/setManager/{empId}")
     public ResponseEntity<Employee> setManager(@PathVariable Integer empId, @RequestParam Integer managerId){
         return new ResponseEntity<>(service.setManager(empId,managerId),HttpStatus.OK);
     }
@@ -116,9 +116,16 @@ public class EmployeeController {
       return new ResponseEntity<>(service.delete(id),HttpStatus.OK);
     }
 
+    @RequestMapping("/API/manager/getDirectReports/{managerId}")
+    public ResponseEntity<ArrayList<Employee>> getDirectReports(@PathVariable Integer managerId){
+        return new ResponseEntity<>(service.getAllEmpsByManager(managerId),HttpStatus.OK);
+    }
+
 
 
     // ------------------ GET EMPLOYEE ATTRIBUTES
+
+
 
     @RequestMapping("/API/emp/getDept/{id}")
     public ResponseEntity<Integer> getEmpDept(@PathVariable Integer id){

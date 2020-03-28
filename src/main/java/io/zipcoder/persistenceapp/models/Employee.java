@@ -17,8 +17,6 @@ public class Employee {
     private String phoneNumber;
     private String email;
     private String hireDate;
-
-    @JoinColumn(name = "DEPARTMENT")
     private Integer deptNumber;
 
     @OneToOne
