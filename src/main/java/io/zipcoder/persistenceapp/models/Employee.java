@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "EMPLOYEE")
 public class Employee {
 
     @Id
@@ -16,6 +17,8 @@ public class Employee {
     private String phoneNumber;
     private String email;
     private String hireDate;
+
+    @JoinColumn(name = "DEPARTMENT")
     private Integer deptNumber;
 
     @OneToOne

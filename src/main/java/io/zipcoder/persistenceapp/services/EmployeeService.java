@@ -6,6 +6,12 @@ import io.zipcoder.persistenceapp.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
 public class EmployeeService {
 
@@ -100,6 +106,21 @@ public class EmployeeService {
 
     public Boolean delete(Integer id){
         repository.delete(id);
+        return true;
+    }
+
+    public ArrayList<Employee> getAllEmpsByDept(Integer deptNumber){
+        ArrayList<Employee> allEmps = (ArrayList<Employee>) index();
+        return (ArrayList<Employee>) allEmps.stream()
+                .filter(e -> e.getDeptNumber() == deptNumber)
+                .collect(Collectors.toList());
+    }
+
+    public boolean removeEmpsFromDept(Integer deptNumber, Integer newDeptNum){
+        getAllEmpsByDept(deptNumber).stream().forEach(employee -> {
+            employee.setDeptNumber(newDeptNum);
+            repository.save(employee);
+        });
         return true;
     }
 }

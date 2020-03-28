@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 public class EmployeeController {
 
@@ -97,8 +99,17 @@ public class EmployeeController {
     }
 
 
-    // ------------------ MANAGER GET/SET
+    // ------------------ EMPLOYEE LIST
 
+    @RequestMapping("API/emp/getByDept/{deptNum}")
+    public ResponseEntity<ArrayList<Employee>> getEmpsByDept(@PathVariable Integer deptNum){
+        return new ResponseEntity<>(service.getAllEmpsByDept(deptNum),HttpStatus.OK);
+    }
+
+    @PutMapping("API/emp/removeByDept{deptNum}")
+    public ResponseEntity<Boolean> removeDeptFromEmps(@PathVariable Integer deptNum, @RequestParam Integer newDept){
+       return new ResponseEntity<>(service.removeEmpsFromDept(deptNum, newDept),HttpStatus.OK);
+    }
 
 
 }

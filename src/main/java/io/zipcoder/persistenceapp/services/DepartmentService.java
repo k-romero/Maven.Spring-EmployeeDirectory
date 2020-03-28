@@ -25,7 +25,7 @@ public class DepartmentService {
     public Department update(Integer id, Department newDept){
         Department originalDepartment = repository.findOne(id);
         originalDepartment.setDeptName(newDept.getDeptName());
-        originalDepartment.setManager(newDept.getManager().getId());
+//        originalDepartment.setManager(newDept.getManager().getId());
         return repository.save(originalDepartment);
     }
 
@@ -43,7 +43,8 @@ public class DepartmentService {
     public Department updateManager(Integer id, Integer managerId){
         EmployeeService service = new EmployeeService();
         Department original = repository.findOne(id);
-        original.setManager(managerId);
+        Employee manager = service.show(managerId);
+        original.setManager(manager);
         return repository.save(original);
     }
 

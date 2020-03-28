@@ -28,9 +28,9 @@ public class DepartmentController {
         return new ResponseEntity<>(service.updateName(deptNumber,deptName),HttpStatus.OK);
     }
 
-    @PutMapping("/API/dept/updateManager/{id}")
-    public ResponseEntity<Department> updateManager(@RequestParam Integer managerId, @PathVariable Integer id){
-        return new ResponseEntity<>(service.updateManager(id,managerId), HttpStatus.OK);
+    @PutMapping("/API/dept/updateManager/{deptId}")
+    public ResponseEntity<Department> updateManager(@RequestParam Integer managerId, @PathVariable Integer deptId){
+        return new ResponseEntity<>(service.updateManager(deptId,managerId), HttpStatus.OK);
     }
 
 }
