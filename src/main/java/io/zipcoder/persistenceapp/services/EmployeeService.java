@@ -37,6 +37,12 @@ public class EmployeeService {
         return repository.save(originalEmployee);
     }
 
+    public Employee updateEmpManager(Integer id, Integer managerId){
+        Employee originalEmployee = repository.findOne(id);
+        originalEmployee.setManager(managerId);
+        return repository.save(originalEmployee);
+    }
+
     public Boolean delete(Integer id){
         repository.delete(id);
         return true;
