@@ -37,11 +37,55 @@ public class EmployeeService {
         return repository.save(originalEmployee);
     }
 
+    public Employee updateFirstName(Integer id, String firstN){
+        Employee originalEmployee = repository.findOne(id);
+        originalEmployee.setFirstName(firstN);
+        return repository.save(originalEmployee);
+    }
+
+    public Employee updateLastName(Integer id, String lastN){
+        Employee originalEmployee = repository.findOne(id);
+        originalEmployee.setLastName(lastN);
+        return repository.save(originalEmployee);
+    }
+
     public Employee updateEmpManager(Integer id, Integer managerId){
         Employee originalEmployee = repository.findOne(id);
         originalEmployee.setManager(managerId);
         return repository.save(originalEmployee);
     }
+
+    public Employee updateDepartment(Integer id, Integer deptNumber){
+        Employee originalEmployee = repository.findOne(id);
+        originalEmployee.setDeptNumber(deptNumber);
+        return repository.save(originalEmployee);
+    }
+
+    public Employee updateEmail(Integer id, String email){
+        Employee originalEmployee = repository.findOne(id);
+        originalEmployee.setEmail(email);
+        return repository.save(originalEmployee);
+    }
+
+    public Employee updateTitle(Integer id, String title){
+        Employee originalEmployee = repository.findOne(id);
+        originalEmployee.setTitle(title);
+        return repository.save(originalEmployee);
+    }
+
+    public Employee updateHireDate(Integer id, String hireDate){
+        Employee originalEmployee = repository.findOne(id);
+        originalEmployee.setHireDate(hireDate);
+        return repository.save(originalEmployee);
+    }
+
+    public Employee updatePhone(Integer id, String phone){
+        Employee originalEmployee = repository.findOne(id);
+        originalEmployee.setPhoneNumber(phone);
+        return repository.save(originalEmployee);
+    }
+
+
 
     public Boolean delete(Integer id){
         repository.delete(id);
