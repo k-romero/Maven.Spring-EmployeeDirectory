@@ -6,6 +6,12 @@ import io.zipcoder.persistenceapp.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
 public class EmployeeService {
 
@@ -30,7 +36,8 @@ public class EmployeeService {
         originalEmployee.setLastName(newEmp.getLastName());
         originalEmployee.setDeptNumber(newEmp.getDeptNumber());
         originalEmployee.setEmail(newEmp.getEmail());
-        originalEmployee.setManager(newEmp.getManagerId());
+        //TODO fix this to be Employee
+//        originalEmployee.setManager(newEmp.getManagerId());
         originalEmployee.setPhoneNumber(newEmp.getPhoneNumber());
         originalEmployee.setTitle(newEmp.getPhoneNumber());
         originalEmployee.setHireDate(newEmp.getHireDate());
@@ -51,7 +58,7 @@ public class EmployeeService {
 
     public Employee updateEmpManager(Integer id, Integer managerId){
         Employee originalEmployee = repository.findOne(id);
-        originalEmployee.setManager(managerId);
+        originalEmployee.setManager(repository.findOne(managerId));
         return repository.save(originalEmployee);
     }
 
@@ -85,10 +92,60 @@ public class EmployeeService {
         return repository.save(originalEmployee);
     }
 
+    public Employee setManager(Integer employeeId, Integer managerId){
+        Employee emp = repository.findOne(employeeId);
+        emp.setManager(repository.findOne(managerId));
+        return repository.save(emp);
+    }
 
+    public Employee getManager(Integer empId){
+        return repository.findOne(empId).getManager();
+    }
 
     public Boolean delete(Integer id){
         repository.delete(id);
         return true;
     }
+
+    public ArrayList<Employee> getAllEmpsByDept(Integer deptNumber){
+        ArrayList<Employee> allEmps = (ArrayList<Employee>) index();
+        return (ArrayList<Employee>) allEmps.stream()
+                .filter(e -> e.getDeptNumber() == deptNumber)
+                .collect(Collectors.toList());
+    }
+
+    public ArrayList<Employee> getAllEmpsByManager(Integer managerId){
+        ArrayList<Employee> allEmps = (ArrayList<Employee>) index();
+        ArrayList<Employee> result = new ArrayList<>();
+        for (Employee e : allEmps) {
+            if(e.getManager() != null){
+                if(e.getManager().getId() == managerId){
+                    result.add(e);
+                }
+            }
+
+        }
+        return result;
+    }
+
+    public boolean removeEmpsFromDept(Integer deptNumber, Integer newDeptNum){
+        getAllEmpsByDept(deptNumber).stream().forEach(employee -> {
+            employee.setDeptNumber(newDeptNum);
+            repository.save(employee);
+        });
+        return true;
+    }
+
+    public Integer getEmpDept(Integer empId){
+        return repository.findOne(empId).getDeptNumber();
+    }
+
+    public String getEmpTitle(Integer empId){
+        return repository.findOne(empId).getTitle();
+    }
+
+    public String getEmpEmail(Integer empId){
+        return repository.findOne(empId).getEmail();
+    }
+
 }

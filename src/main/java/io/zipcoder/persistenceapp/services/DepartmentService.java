@@ -1,5 +1,6 @@
 package io.zipcoder.persistenceapp.services;
 
+import io.zipcoder.persistenceapp.controllers.EmployeeController;
 import io.zipcoder.persistenceapp.models.Department;
 import io.zipcoder.persistenceapp.models.Employee;
 import io.zipcoder.persistenceapp.repositories.DepartmentRepository;
@@ -24,8 +25,13 @@ public class DepartmentService {
     public Department update(Integer id, Department newDept){
         Department originalDepartment = repository.findOne(id);
         originalDepartment.setDeptName(newDept.getDeptName());
-        originalDepartment.setManagerId(newDept.getManagerId());
+//        originalDepartment.setManager(newDept.getManager().getId());
         return repository.save(originalDepartment);
+    }
+
+    public Boolean delete(Integer id){
+        repository.delete(id);
+        return true;
     }
 
     public Department updateName(Integer id, String deptName){
@@ -35,14 +41,11 @@ public class DepartmentService {
     }
 
     public Department updateManager(Integer id, Integer managerId){
+        EmployeeService service = new EmployeeService();
         Department original = repository.findOne(id);
-        original.setManagerId(managerId);
+        Employee manager = service.show(managerId);
+        original.setManager(manager);
         return repository.save(original);
-    }
-
-    public Boolean delete(Integer id){
-        repository.delete(id);
-        return true;
     }
 
 

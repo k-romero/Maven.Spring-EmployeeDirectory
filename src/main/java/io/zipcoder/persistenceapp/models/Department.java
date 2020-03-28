@@ -1,23 +1,30 @@
 package io.zipcoder.persistenceapp.models;
 
+import io.zipcoder.persistenceapp.services.EmployeeService;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name = "DEPARTMENT")
 public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JoinColumn(name = "EMPLOYEE")
     private Integer deptNumber;
 
     private String deptName;
-    private Integer managerId;
+
+    @OneToOne
+    @JoinColumn(name = "MANAGER_ID")
+    private Employee manager;
 
     public Department() {
     }
 
     public Department(String deptName, Integer managerId) {
+        manager = new EmployeeService().show(managerId);
         this.deptName = deptName;
-        this.managerId = managerId;
     }
 
     public Integer getDeptNumber() {
@@ -36,11 +43,11 @@ public class Department {
         this.deptName = deptName;
     }
 
-    public Integer getManagerId() {
-        return managerId;
+    public Employee getManager() {
+        return manager;
     }
 
-    public void setManagerId(Integer managerId) {
-        this.managerId = managerId;
+    public void setManager(Employee manager) {
+        this.manager = manager;
     }
 }
