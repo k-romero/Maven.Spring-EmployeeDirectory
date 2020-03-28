@@ -28,6 +28,18 @@ public class DepartmentService {
         return repository.save(originalDepartment);
     }
 
+    public Department updateName(Integer id, String deptName){
+        Department original = repository.findOne(id);
+        original.setDeptName(deptName);
+        return repository.save(original);
+    }
+
+    public Department updateManager(Integer id, Integer managerId){
+        Department original = repository.findOne(id);
+        original.setManagerId(managerId);
+        return repository.save(original);
+    }
+
     public Boolean delete(Integer id){
         repository.delete(id);
         return true;

@@ -77,7 +77,7 @@ public class EmployeeController {
 
     @PutMapping("/API/updateHireDate/{id}")
     public ResponseEntity<Employee> updateHireDate(@RequestParam String hireDate,@PathVariable Integer id){
-        return new ResponseEntity<>(service.updateTitle(id,hireDate), HttpStatus.OK);
+        return new ResponseEntity<>(service.updateHireDate(id,hireDate), HttpStatus.OK);
     }
 
 
