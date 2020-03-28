@@ -102,8 +102,6 @@ public class EmployeeService {
         return repository.findOne(empId).getManager();
     }
 
-
-
     public Boolean delete(Integer id){
         repository.delete(id);
         return true;
@@ -122,5 +120,17 @@ public class EmployeeService {
             repository.save(employee);
         });
         return true;
+    }
+
+    public Integer getEmpDept(Integer empId){
+        return repository.findOne(empId).getDeptNumber();
+    }
+
+    public String getEmpTitle(Integer empId){
+        return repository.findOne(empId).getTitle();
+    }
+
+    public String getEmpEmail(Integer empId){
+        return repository.findOne(empId).getEmail();
     }
 }

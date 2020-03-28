@@ -106,10 +106,32 @@ public class EmployeeController {
         return new ResponseEntity<>(service.getAllEmpsByDept(deptNum),HttpStatus.OK);
     }
 
-    @PutMapping("API/emp/removeByDept{deptNum}")
+    @PutMapping("API/emp/removeByDept/{deptNum}")
     public ResponseEntity<Boolean> removeDeptFromEmps(@PathVariable Integer deptNum, @RequestParam Integer newDept){
        return new ResponseEntity<>(service.removeEmpsFromDept(deptNum, newDept),HttpStatus.OK);
     }
 
+    @DeleteMapping("/API/emp/removeEmp/{id}")
+    public ResponseEntity<Boolean> removeEmpById(@PathVariable Integer id){
+      return new ResponseEntity<>(service.delete(id),HttpStatus.OK);
+    }
 
+
+
+    // ------------------ GET EMPLOYEE ATTRIBUTES
+
+    @RequestMapping("/API/emp/getDept/{id}")
+    public ResponseEntity<Integer> getEmpDept(@PathVariable Integer id){
+        return new ResponseEntity<>(service.getEmpDept(id),HttpStatus.OK);
+    }
+
+    @RequestMapping("/API/emp/getTitle/{id}")
+    public ResponseEntity<String> getEmpTitle(@PathVariable Integer id){
+        return new ResponseEntity<>(service.getEmpTitle(id),HttpStatus.OK);
+    }
+
+    @RequestMapping("/API/emp/getEmail/{id}")
+    public ResponseEntity<String> getEmpEmail(@PathVariable Integer id){
+        return new ResponseEntity<>(service.getEmpEmail(id),HttpStatus.OK);
+    }
 }
