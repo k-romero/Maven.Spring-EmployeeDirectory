@@ -18,14 +18,19 @@ public class EmployeeController {
         return new ResponseEntity<>(service.show(id),HttpStatus.OK);
     }
 
-    @RequestMapping
-    public ResponseEntity<Iterable<Employee>> index(){
-        return new ResponseEntity<>(service.index(), HttpStatus.OK);
-    }
+//    @RequestMapping
+//    public ResponseEntity<Iterable<Employee>> index(){
+//        return new ResponseEntity<>(service.index(), HttpStatus.OK);
+//    }
 
     @PostMapping("/API")
     public ResponseEntity<Employee> create(@RequestBody Employee employee){
         return new ResponseEntity<>(service.create(employee), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/API/{id}")
+    public ResponseEntity<Employee> updateById(@RequestBody Employee employee,@PathVariable Integer id){
+        return new ResponseEntity<>(service.update(id,employee), HttpStatus.OK);
     }
 
 }
