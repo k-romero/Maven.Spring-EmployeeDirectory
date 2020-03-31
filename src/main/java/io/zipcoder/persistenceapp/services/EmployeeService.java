@@ -1,16 +1,19 @@
 package io.zipcoder.persistenceapp.services;
 
-import io.zipcoder.persistenceapp.models.Department;
+
 import io.zipcoder.persistenceapp.models.Employee;
 import io.zipcoder.persistenceapp.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 @Service
 public class EmployeeService {
@@ -36,8 +39,7 @@ public class EmployeeService {
         originalEmployee.setLastName(newEmp.getLastName());
         originalEmployee.setDeptNumber(newEmp.getDeptNumber());
         originalEmployee.setEmail(newEmp.getEmail());
-        //TODO fix this to be Employee
-//        originalEmployee.setManager(newEmp.getManagerId());
+        originalEmployee.setManager(newEmp.getManager());
         originalEmployee.setPhoneNumber(newEmp.getPhoneNumber());
         originalEmployee.setTitle(newEmp.getPhoneNumber());
         originalEmployee.setHireDate(newEmp.getHireDate());
@@ -127,13 +129,12 @@ public class EmployeeService {
                     result.add(e);
                 }
             }
-
         }
         return result;
     }
 
     public boolean removeEmpsFromDept(Integer deptNumber, Integer newDeptNum){
-        getAllEmpsByDept(deptNumber).stream().forEach(employee -> {
+        getAllEmpsByDept(deptNumber).forEach(employee -> {
             employee.setDeptNumber(newDeptNum);
             repository.save(employee);
         });
@@ -156,6 +157,22 @@ public class EmployeeService {
        employeeList.forEach(e -> e.setManager(newManager));
        repository.save(employeeList);
        return employeeList;
+    }
+
+    public List<Employee> removeManagerAndSwapWithNextInLine(Integer managerToRemoveId){
+        return changeManager(managerToRemoveId,getManager(managerToRemoveId).getId());
+    }
+
+    public List<Employee> findEmpsWithNoManager(){
+        return repository.findAllByManagerNull();
+    }
+
+    public HashSet<Employee> findAllDirectAndIndirectReports(Integer managerId){
+        ArrayList<Employee> resultList = new ArrayList<>(getAllEmpsByManagerId(managerId));
+        for (int i = 0; i < resultList.size(); i++) {
+            resultList.addAll(findAllDirectAndIndirectReports(resultList.get(i).getId()));
+        }
+        return new HashSet<>(resultList);
     }
 
     public Integer getEmpDept(Integer empId){

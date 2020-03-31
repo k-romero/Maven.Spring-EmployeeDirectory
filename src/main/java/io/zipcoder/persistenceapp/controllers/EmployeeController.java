@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class EmployeeController {
@@ -17,7 +15,11 @@ public class EmployeeController {
     @Autowired
     EmployeeService service;
 
+
+
     // ------------------ BASIC CRUD
+
+
 
     @GetMapping(value = "/API/emp/show/{id}")
     public ResponseEntity<Employee> show(@PathVariable Integer id){
@@ -35,7 +37,9 @@ public class EmployeeController {
     }
 
 
+
     // ------------------ ALL UPDATES
+
 
 
     @PutMapping("/API/emp/updateByID{id}")
@@ -52,7 +56,6 @@ public class EmployeeController {
     public ResponseEntity<Employee> updateLastName(@RequestParam String lastName,@PathVariable Integer id){
         return new ResponseEntity<>(service.updateLastName(id,lastName), HttpStatus.OK);
     }
-
 
     @PutMapping("/API/emp/updateManager/{id}")
     public ResponseEntity<Employee> updateManager(@RequestParam Integer managerId,@PathVariable Integer id){
@@ -110,9 +113,16 @@ public class EmployeeController {
         return new ResponseEntity<>(service.changeManager(oldManagerId,newManagerId),HttpStatus.OK);
     }
 
+    @PutMapping("/API/manager/removeAndSwap/{managerToRemoveId}")
+    public ResponseEntity<List<Employee>> removeManagerAndSwap(@PathVariable Integer managerToRemoveId){
+        return new ResponseEntity<>(service.removeManagerAndSwapWithNextInLine(managerToRemoveId), HttpStatus.OK);
+    }
+
 
 
     // ------------------ EMPLOYEE LIST
+
+
 
     @RequestMapping("API/emp/getByDept/{deptNum}")
     public ResponseEntity<ArrayList<Employee>> getEmpsByDept(@PathVariable Integer deptNum){
@@ -124,23 +134,25 @@ public class EmployeeController {
         return new ResponseEntity<>(service.getAllEmpsByManagerId(managerNum),HttpStatus.OK);
     }
 
-    @PutMapping("API/emp/removeByDept/{deptNum}")
-    public ResponseEntity<Boolean> removeDeptFromEmps(@PathVariable Integer deptNum, @RequestParam Integer newDept){
-       return new ResponseEntity<>(service.removeEmpsFromDept(deptNum, newDept),HttpStatus.OK);
-    }
-
-    @DeleteMapping("/API/emp/removeEmp/{id}")
-    public ResponseEntity<Boolean> removeEmpById(@PathVariable Integer id){
-      return new ResponseEntity<>(service.delete(id),HttpStatus.OK);
-    }
-
     @RequestMapping("/API/manager/getDirectReports/{managerId}")
     public ResponseEntity<ArrayList<Employee>> getDirectReports(@PathVariable Integer managerId){
         return new ResponseEntity<>(service.getAllDirectReports(managerId),HttpStatus.OK);
     }
 
+    @RequestMapping("/API/manager/findEmployeesNoManager")
+    public ResponseEntity<List<Employee>> findEmployeesNoManager(){
+        return new ResponseEntity<>(service.findEmpsWithNoManager(),HttpStatus.OK);
+    }
+
+    @RequestMapping("/API/manager/getDirectAndIndirect/{managerId}")
+    public ResponseEntity<HashSet<Employee>> findDirectAndInDirectReports(@PathVariable Integer managerId){
+        return new ResponseEntity<>(service.findAllDirectAndIndirectReports(managerId), HttpStatus.OK);
+    }
+
+
 
     // ------------------ GET EMPLOYEE ATTRIBUTES
+
 
 
     @RequestMapping("/API/emp/getDept/{id}")
@@ -157,4 +169,22 @@ public class EmployeeController {
     public ResponseEntity<String> getEmpEmail(@PathVariable Integer id){
         return new ResponseEntity<>(service.getEmpEmail(id),HttpStatus.OK);
     }
+
+
+
+    // ------------------ REMOVE
+
+
+
+    @PutMapping("API/emp/removeByDept/{deptNum}")
+    public ResponseEntity<Boolean> removeDeptFromEmps(@PathVariable Integer deptNum, @RequestParam Integer newDept){
+        return new ResponseEntity<>(service.removeEmpsFromDept(deptNum, newDept),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/API/emp/removeEmp/{id}")
+    public ResponseEntity<Boolean> removeEmpById(@PathVariable Integer id){
+        return new ResponseEntity<>(service.delete(id),HttpStatus.OK);
+    }
+
+
 }
