@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class EmployeeController {
@@ -98,12 +100,28 @@ public class EmployeeController {
         return new ResponseEntity<>(service.setManager(empId,managerId),HttpStatus.OK);
     }
 
+    @RequestMapping("/API/emp/getAllManagers/{empId}")
+    public ResponseEntity<ArrayList<Employee>> getReportingHierarchy(@PathVariable Integer empId){
+        return new ResponseEntity<>(service.reportingHierarchy(empId),HttpStatus.OK);
+    }
+
+    @PutMapping("/API/emp/changeManager/{oldManagerId}")
+    public ResponseEntity<List<Employee>> changeManager(@PathVariable Integer oldManagerId, @RequestParam Integer newManagerId){
+        return new ResponseEntity<>(service.changeManager(oldManagerId,newManagerId),HttpStatus.OK);
+    }
+
+
 
     // ------------------ EMPLOYEE LIST
 
     @RequestMapping("API/emp/getByDept/{deptNum}")
     public ResponseEntity<ArrayList<Employee>> getEmpsByDept(@PathVariable Integer deptNum){
         return new ResponseEntity<>(service.getAllEmpsByDept(deptNum),HttpStatus.OK);
+    }
+
+    @RequestMapping("API/emp/getByManager/{managerNum}")
+    public ResponseEntity<ArrayList<Employee>> getEmpsByManager(@PathVariable Integer managerNum){
+        return new ResponseEntity<>(service.getAllEmpsByManagerId(managerNum),HttpStatus.OK);
     }
 
     @PutMapping("API/emp/removeByDept/{deptNum}")
@@ -118,13 +136,11 @@ public class EmployeeController {
 
     @RequestMapping("/API/manager/getDirectReports/{managerId}")
     public ResponseEntity<ArrayList<Employee>> getDirectReports(@PathVariable Integer managerId){
-        return new ResponseEntity<>(service.getAllEmpsByManager(managerId),HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllDirectReports(managerId),HttpStatus.OK);
     }
 
 
-
     // ------------------ GET EMPLOYEE ATTRIBUTES
-
 
 
     @RequestMapping("/API/emp/getDept/{id}")

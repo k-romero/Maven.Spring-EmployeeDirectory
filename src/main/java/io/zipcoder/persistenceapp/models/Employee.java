@@ -17,9 +17,11 @@ public class Employee {
     private String phoneNumber;
     private String email;
     private String hireDate;
+
+    @JoinColumn(name = "deptNumber")
     private Integer deptNumber;
 
-    @OneToOne
+    @ManyToOne
     private Employee manager;
 
     public Employee() {
@@ -43,7 +45,6 @@ public class Employee {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.hireDate = hireDate;
-        this.manager = manager;
         this.deptNumber = deptNumber;
     }
 
@@ -110,7 +111,7 @@ public class Employee {
         this.hireDate = hireDate;
     }
 
-    @Column(name = "MANAGER_ID")
+    @Column(name = "MANAGER")
     public Employee getManager() {
         return manager;
     }

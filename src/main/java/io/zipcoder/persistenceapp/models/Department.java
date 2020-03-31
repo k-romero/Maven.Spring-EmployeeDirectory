@@ -10,13 +10,10 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JoinColumn(name = "EMPLOYEE")
     private Integer deptNumber;
-
     private String deptName;
 
     @OneToOne
-    @JoinColumn(name = "MANAGER_ID")
     private Employee manager;
 
     public Department() {

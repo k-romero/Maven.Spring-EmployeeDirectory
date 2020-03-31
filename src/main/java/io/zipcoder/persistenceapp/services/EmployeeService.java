@@ -114,7 +114,11 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    public ArrayList<Employee> getAllEmpsByManager(Integer managerId){
+    public ArrayList<Employee> getAllEmpsByManagerId(Integer managerId){
+        return (ArrayList<Employee>) repository.findAllByManagerId(managerId);
+    }
+
+    public ArrayList<Employee> getAllDirectReports(Integer managerId){
         ArrayList<Employee> allEmps = (ArrayList<Employee>) index();
         ArrayList<Employee> result = new ArrayList<>();
         for (Employee e : allEmps) {
@@ -136,6 +140,24 @@ public class EmployeeService {
         return true;
     }
 
+    public ArrayList<Employee> reportingHierarchy(Integer employeeId){
+        ArrayList<Employee> result = new ArrayList<>();
+        Employee emp = repository.findOne(employeeId);
+        while(emp.getManager() != null){
+            result.add(emp.getManager());
+            emp = emp.getManager();
+        }
+        return result;
+    }
+
+    public List<Employee> changeManager(Integer oldManagerId, Integer newManagerId){
+       List<Employee> employeeList = repository.findAllByManagerId(oldManagerId);
+       Employee newManager = repository.findOne(newManagerId);
+       employeeList.forEach(e -> e.setManager(newManager));
+       repository.save(employeeList);
+       return employeeList;
+    }
+
     public Integer getEmpDept(Integer empId){
         return repository.findOne(empId).getDeptNumber();
     }
@@ -147,5 +169,7 @@ public class EmployeeService {
     public String getEmpEmail(Integer empId){
         return repository.findOne(empId).getEmail();
     }
+
+
 
 }
