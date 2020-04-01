@@ -64,8 +64,21 @@ public class EmployeeController {
     }
 
     @PutMapping("/API/emp/updateFirstName/{id}")
-    public ResponseEntity<Employee> updateFirstName(@RequestParam String firstName,@PathVariable Integer id){
-        return new ResponseEntity<>(service.updateFirstName(id,firstName), HttpStatus.OK);
+    public ResponseEntity<?> updateFirstName(@RequestParam String firstName,@PathVariable Integer id){
+
+        Optional<Employee> exsistingEmployee = service.show(id);
+
+        return exsistingEmployee.map(e -> {
+            e.setFirstName(firstName);
+            try {
+                return ResponseEntity
+                        .ok()
+                        .location(new URI("/API/emp/updateFirstName/" + e.getId()))
+                        .body(e);
+            }catch(URISyntaxException ex) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/API/emp/updateLastName/{id}")
