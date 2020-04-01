@@ -22,8 +22,14 @@ public class EmployeeController {
 
 
     @GetMapping(value = "/API/emp/show/{id}")
-    public ResponseEntity<Employee> show(@PathVariable Integer id){
-        return new ResponseEntity<>(service.show(id),HttpStatus.OK);
+    public ResponseEntity<?> show(@PathVariable Integer id){
+        return this.service.show(id)
+                .map(employee -> ResponseEntity
+                                    .ok()
+                                    .body(employee))
+                .orElse(ResponseEntity
+                            .notFound()
+                            .build());
     }
 
     @RequestMapping("/API/emp/showAll")

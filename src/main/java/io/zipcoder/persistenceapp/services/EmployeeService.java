@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -22,8 +19,8 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository repository;
 
-    public Employee show(Integer id){
-        return repository.findOne(id);
+    public Optional<Employee> show(Integer id){
+        return Optional.ofNullable(repository.findOne(id));
     }
 
     public Iterable<Employee> index(){
