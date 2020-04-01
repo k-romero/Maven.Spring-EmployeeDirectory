@@ -1,6 +1,7 @@
 package io.zipcoder.persistenceapp.services;
 
 
+import io.zipcoder.persistenceapp.models.Department;
 import io.zipcoder.persistenceapp.models.Employee;
 import io.zipcoder.persistenceapp.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,6 +186,21 @@ public class EmployeeService {
 
     public String getEmpEmail(Integer empId){
         return repository.findOne(empId).getEmail();
+    }
+
+    @Autowired
+    DepartmentService deptService;
+
+    public boolean mergeDepartments(Integer deptNumToRemove, Integer deptNumToMergeInto){
+        Employee oldDeptManager = deptService.show(deptNumToRemove).getManager();
+        Employee newManager = deptService.show(deptNumToMergeInto).getManager();
+        List<Employee> oldDeptEmployees = getAllEmpsByDept(deptNumToRemove);
+        oldDeptEmployees.forEach(employee -> {
+            employee.setDeptNumber(deptNumToMergeInto);
+            repository.save(employee);
+        });
+        changeManager(oldDeptManager.getId(),newManager.getId());
+        return true;
     }
 
 

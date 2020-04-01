@@ -149,6 +149,11 @@ public class EmployeeController {
         return new ResponseEntity<>(service.findAllDirectAndIndirectReports(managerId), HttpStatus.OK);
     }
 
+    @PutMapping("/API/emp/mergeDept")
+    public ResponseEntity<Boolean> mergeDepartments(@RequestParam Integer deptNumToRemove,@RequestParam Integer deptNumToMergeInto){
+        return new ResponseEntity<>(service.mergeDepartments(deptNumToRemove,deptNumToMergeInto),HttpStatus.OK);
+    }
+
 
 
     // ------------------ GET EMPLOYEE ATTRIBUTES

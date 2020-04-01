@@ -18,3 +18,7 @@ insert into employee (id, first_name, last_name, title, phone_number, email, hir
 insert into employee (id, first_name, last_name, title, phone_number, email, hire_date, dept_number) values (18, 'Winn', 'Pabelik', 'Senior Editor', 3674471, 'wpabelikh@barnesandnoble.com', '2019-11-14', 1);
 insert into employee (id, first_name, last_name, title, phone_number, email, hire_date, dept_number) values (19, 'Maurene', 'Philips', 'Food Chemist', 3684597, 'mphilipsi@imdb.com', '2019-07-05', 1);
 insert into employee (id, first_name, last_name, title, phone_number, email, hire_date, dept_number) values (20, 'Ozzy', 'Marusyak', 'Accounting Assistant III', 3695211, 'omarusyakj@weibo.com', '2019-12-06', 1);
+
+insert into department (dept_number, dept_name) values (1, 'Data');
+insert into department (dept_number, dept_name) values (2, 'Engineering');
+insert into department (dept_number, dept_name) values (3, 'Development');

@@ -1,18 +1,17 @@
 package io.zipcoder.persistenceapp.services;
 
-import io.zipcoder.persistenceapp.controllers.EmployeeController;
 import io.zipcoder.persistenceapp.models.Department;
 import io.zipcoder.persistenceapp.models.Employee;
 import io.zipcoder.persistenceapp.repositories.DepartmentRepository;
+import io.zipcoder.persistenceapp.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Service
 public class DepartmentService {
 
     @Autowired
-    DepartmentRepository repository;
+    private DepartmentRepository repository;
 
     public Department show(Integer id){
         return repository.findOne(id);
@@ -25,7 +24,7 @@ public class DepartmentService {
     public Department update(Integer id, Department newDept){
         Department originalDepartment = repository.findOne(id);
         originalDepartment.setDeptName(newDept.getDeptName());
-//        originalDepartment.setManager(newDept.getManager().getId());
+        originalDepartment.setManager(newDept.getManager());
         return repository.save(originalDepartment);
     }
 
@@ -40,13 +39,17 @@ public class DepartmentService {
         return repository.save(original);
     }
 
-    public Department updateManager(Integer id, Integer managerId){
-        EmployeeService service = new EmployeeService();
-        Department original = repository.findOne(id);
-        Employee manager = service.show(managerId);
-        original.setManager(manager);
+    @Autowired
+    private EmployeeService empService;
+
+    public Department setManager(Integer deptId, Integer managerId){
+        Department original = show(deptId);
+        original.setManager(empService.show(managerId));
         return repository.save(original);
     }
+
+
+
 
 
 }

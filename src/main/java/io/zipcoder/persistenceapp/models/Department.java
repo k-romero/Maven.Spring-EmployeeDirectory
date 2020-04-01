@@ -10,6 +10,7 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "dept_number")
     private Integer deptNumber;
     private String deptName;
 
