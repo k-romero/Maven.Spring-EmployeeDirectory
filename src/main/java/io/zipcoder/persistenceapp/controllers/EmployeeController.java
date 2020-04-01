@@ -41,7 +41,7 @@ public class EmployeeController {
 
     @PostMapping("/API/emp/create")
     public ResponseEntity<Employee> create(@RequestBody Employee employee){
-        Employee newEmp = service.create(employee);
+        Employee newEmp = this.service.create(employee);
 
         try {
             return ResponseEntity
@@ -65,9 +65,7 @@ public class EmployeeController {
 
     @PutMapping("/API/emp/updateFirstName/{id}")
     public ResponseEntity<?> updateFirstName(@RequestParam String firstName,@PathVariable Integer id){
-
         Optional<Employee> exsistingEmployee = service.show(id);
-
         return exsistingEmployee.map(e -> {
             e.setFirstName(firstName);
             try {
@@ -82,8 +80,19 @@ public class EmployeeController {
     }
 
     @PutMapping("/API/emp/updateLastName/{id}")
-    public ResponseEntity<Employee> updateLastName(@RequestParam String lastName,@PathVariable Integer id){
-        return new ResponseEntity<>(service.updateLastName(id,lastName), HttpStatus.OK);
+    public ResponseEntity<?> updateLastName(@RequestParam String lastName,@PathVariable Integer id){
+        Optional<Employee> existingEmployee = service.show(id);
+        return existingEmployee.map(e -> {
+            e.setLastName(lastName);
+            try {
+                return ResponseEntity
+                        .ok()
+                        .location(new URI("/API/emp/updateLastName/" + e.getId()))
+                        .body(e);
+            }catch(URISyntaxException ex) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/API/emp/updateManager/{id}")
@@ -216,8 +225,14 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/API/emp/removeEmp/{id}")
-    public ResponseEntity<Boolean> removeEmpById(@PathVariable Integer id){
-        return new ResponseEntity<>(service.delete(id),HttpStatus.OK);
+    public ResponseEntity<?> removeEmpById(@PathVariable Integer id){
+        Optional<Employee> exsistingEmp = service.show(id);
+
+        return exsistingEmp
+                .map(e -> {
+                    service.delete(e.getId());
+                    return ResponseEntity.ok().build();
+                }).orElse(ResponseEntity.notFound().build());
     }
 
 
