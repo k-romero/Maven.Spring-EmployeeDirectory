@@ -159,6 +159,29 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$.lastName", is("Stryder")));
     }
 
+//    @Test
+//    @DisplayName("PUT /API/emp/updatePhone/21 - Success")
+//    void testUpdateEmployeePhone() throws Exception {
+//        //Setup our mocked service
+//        Employee putEmp = new Employee(21,"Kevin","Stryder","Dev","5550005555","test@testmail.com","2020-04-01",1);
+//        Employee mockEmp = new Employee(21,"Kevin","Romero","Dev","3025551234","test@testmail.com","2020-04-01",1);
+//        doReturn(Optional.of(mockEmp)).when(service).show(21);
+//        doReturn(mockEmp).when(service).create(any());
+//
+//        //Execute the PUT request
+//        mockMvc.perform(put("/API/emp/updatePhone/{id}",21)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header(HttpHeaders.IF_MATCH,21)
+//                .param("phone","5550005555")
+//                .content(asJsonString(putEmp)))
+//
+//                //Validate that we get a 200 Response
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id", is(21)))
+//                .andExpect(jsonPath("$.phone", is("5550005555")));
+//    }
+
     @Test
     @DisplayName("DELETE /API/emp/removeEmp/21")
     void testDelete() throws Exception {

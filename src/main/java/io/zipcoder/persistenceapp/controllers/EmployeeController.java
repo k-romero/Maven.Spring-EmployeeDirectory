@@ -4,6 +4,7 @@ import io.zipcoder.persistenceapp.models.Employee;
 import io.zipcoder.persistenceapp.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -105,8 +106,8 @@ public class EmployeeController {
         return new ResponseEntity<>(service.updateDepartment(id,deptNum), HttpStatus.OK);
     }
 
-    @PutMapping("/API/emp/updatePhone/{id}")
-    public ResponseEntity<Employee> updatePhone(@RequestParam String phone,@PathVariable Integer id){
+    @PutMapping(value = "/API/emp/updatePhone/{id}", produces = (MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<?> updatePhone(@RequestParam String phone,@PathVariable Integer id){
         return new ResponseEntity<>(service.updatePhone(id,phone), HttpStatus.OK);
     }
 
