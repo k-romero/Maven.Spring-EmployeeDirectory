@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 @RestController
@@ -39,7 +41,15 @@ public class EmployeeController {
 
     @PostMapping("/API/emp/create")
     public ResponseEntity<Employee> create(@RequestBody Employee employee){
-        return new ResponseEntity<>(service.create(employee), HttpStatus.CREATED);
+        Employee newEmp = service.create(employee);
+
+        try {
+            return ResponseEntity
+                    .created(new URI("/API/emp/create/" + newEmp.getId()))
+                    .body(newEmp);
+        } catch (URISyntaxException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 
