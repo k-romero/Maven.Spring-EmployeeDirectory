@@ -38,6 +38,17 @@ public class Employee {
         this.deptNumber = deptNumber;
     }
 
+    public Employee(Integer id, String firstName, String lastName, String title, String phoneNumber, String email, String hireDate, Integer deptNumber) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.title = title;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.hireDate = hireDate;
+        this.deptNumber = deptNumber;
+    }
+
     public Employee(String firstName, String lastName, String title, String phoneNumber, String email, String hireDate, Integer deptNumber) {
         this.firstName = firstName;
         this.lastName = lastName;

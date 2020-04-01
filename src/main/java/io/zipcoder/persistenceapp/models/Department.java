@@ -21,7 +21,7 @@ public class Department {
     }
 
     public Department(String deptName, Integer managerId) {
-        manager = new EmployeeService().show(managerId);
+        manager = new EmployeeService().getEmployee(managerId);
         this.deptName = deptName;
     }
 

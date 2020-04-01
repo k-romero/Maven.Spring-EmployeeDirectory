@@ -14,7 +14,7 @@ public class DepartmentService {
     private DepartmentRepository repository;
 
     public Department show(Integer id){
-        return repository.findOne(id);
+        return repository.findDepartmentByDeptNumber(id);
     }
 
     public Department create(Department dept){
@@ -22,19 +22,19 @@ public class DepartmentService {
     }
 
     public Department update(Integer id, Department newDept){
-        Department originalDepartment = repository.findOne(id);
+        Department originalDepartment = repository.findDepartmentByDeptNumber(id);
         originalDepartment.setDeptName(newDept.getDeptName());
         originalDepartment.setManager(newDept.getManager());
         return repository.save(originalDepartment);
     }
 
     public Boolean delete(Integer id){
-        repository.delete(id);
+        repository.deleteDepartmentByDeptNumber(id);
         return true;
     }
 
     public Department updateName(Integer id, String deptName){
-        Department original = repository.findOne(id);
+        Department original = repository.findDepartmentByDeptNumber(id);
         original.setDeptName(deptName);
         return repository.save(original);
     }
@@ -44,7 +44,7 @@ public class DepartmentService {
 
     public Department setManager(Integer deptId, Integer managerId){
         Department original = show(deptId);
-        original.setManager(empService.show(managerId));
+        original.setManager(empService.getEmployee(managerId));
         return repository.save(original);
     }
 

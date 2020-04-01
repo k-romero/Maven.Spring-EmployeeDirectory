@@ -17,10 +17,14 @@ import java.util.stream.Collectors;
 public class EmployeeService {
 
     @Autowired
-    EmployeeRepository repository;
+    private EmployeeRepository repository;
 
     public Optional<Employee> show(Integer id){
-        return Optional.ofNullable(repository.findOne(id));
+        return Optional.ofNullable(repository.findEmployeeById(id));
+    }
+
+    public Employee getEmployee(Integer id){
+        return repository.findEmployeeById(id);
     }
 
     public Iterable<Employee> index(){
@@ -32,7 +36,7 @@ public class EmployeeService {
     }
 
     public Employee update(Integer id, Employee newEmp){
-        Employee originalEmployee = repository.findOne(id);
+        Employee originalEmployee = repository.findEmployeeById(id);
         originalEmployee.setFirstName(newEmp.getFirstName());
         originalEmployee.setLastName(newEmp.getLastName());
         originalEmployee.setDeptNumber(newEmp.getDeptNumber());
@@ -45,65 +49,65 @@ public class EmployeeService {
     }
 
     public Employee updateFirstName(Integer id, String firstN){
-        Employee originalEmployee = repository.findOne(id);
+        Employee originalEmployee = repository.findEmployeeById(id);
         originalEmployee.setFirstName(firstN);
         return repository.save(originalEmployee);
     }
 
     public Employee updateLastName(Integer id, String lastN){
-        Employee originalEmployee = repository.findOne(id);
+        Employee originalEmployee = repository.findEmployeeById(id);
         originalEmployee.setLastName(lastN);
         return repository.save(originalEmployee);
     }
 
     public Employee updateEmpManager(Integer id, Integer managerId){
-        Employee originalEmployee = repository.findOne(id);
-        originalEmployee.setManager(repository.findOne(managerId));
+        Employee originalEmployee = repository.findEmployeeById(id);
+        originalEmployee.setManager(repository.findEmployeeById(managerId));
         return repository.save(originalEmployee);
     }
 
     public Employee updateDepartment(Integer id, Integer deptNumber){
-        Employee originalEmployee = repository.findOne(id);
+        Employee originalEmployee = repository.findEmployeeById(id);
         originalEmployee.setDeptNumber(deptNumber);
         return repository.save(originalEmployee);
     }
 
     public Employee updateEmail(Integer id, String email){
-        Employee originalEmployee = repository.findOne(id);
+        Employee originalEmployee = repository.findEmployeeById(id);
         originalEmployee.setEmail(email);
         return repository.save(originalEmployee);
     }
 
     public Employee updateTitle(Integer id, String title){
-        Employee originalEmployee = repository.findOne(id);
+        Employee originalEmployee = repository.findEmployeeById(id);
         originalEmployee.setTitle(title);
         return repository.save(originalEmployee);
     }
 
     public Employee updateHireDate(Integer id, String hireDate){
-        Employee originalEmployee = repository.findOne(id);
+        Employee originalEmployee = repository.findEmployeeById(id);
         originalEmployee.setHireDate(hireDate);
         return repository.save(originalEmployee);
     }
 
     public Employee updatePhone(Integer id, String phone){
-        Employee originalEmployee = repository.findOne(id);
+        Employee originalEmployee = repository.findEmployeeById(id);
         originalEmployee.setPhoneNumber(phone);
         return repository.save(originalEmployee);
     }
 
     public Employee setManager(Integer employeeId, Integer managerId){
-        Employee emp = repository.findOne(employeeId);
-        emp.setManager(repository.findOne(managerId));
+        Employee emp = repository.findEmployeeById(employeeId);
+        emp.setManager(repository.findEmployeeById(managerId));
         return repository.save(emp);
     }
 
     public Employee getManager(Integer empId){
-        return repository.findOne(empId).getManager();
+        return repository.findEmployeeById(empId).getManager();
     }
 
     public Boolean delete(Integer id){
-        repository.delete(id);
+        repository.deleteEmployeeById(id);
         return true;
     }
 
@@ -141,7 +145,7 @@ public class EmployeeService {
 
     public ArrayList<Employee> reportingHierarchy(Integer employeeId){
         ArrayList<Employee> result = new ArrayList<>();
-        Employee emp = repository.findOne(employeeId);
+        Employee emp = repository.findEmployeeById(employeeId);
         while(emp.getManager() != null){
             result.add(emp.getManager());
             emp = emp.getManager();
@@ -151,9 +155,9 @@ public class EmployeeService {
 
     public List<Employee> changeManager(Integer oldManagerId, Integer newManagerId){
        List<Employee> employeeList = repository.findAllByManagerId(oldManagerId);
-       Employee newManager = repository.findOne(newManagerId);
+       Employee newManager = repository.findEmployeeById(newManagerId);
        employeeList.forEach(e -> e.setManager(newManager));
-       repository.save(employeeList);
+       repository.saveAll(employeeList);
        return employeeList;
     }
 
@@ -174,15 +178,15 @@ public class EmployeeService {
     }
 
     public Integer getEmpDept(Integer empId){
-        return repository.findOne(empId).getDeptNumber();
+        return repository.findEmployeeById(empId).getDeptNumber();
     }
 
     public String getEmpTitle(Integer empId){
-        return repository.findOne(empId).getTitle();
+        return repository.findEmployeeById(empId).getTitle();
     }
 
     public String getEmpEmail(Integer empId){
-        return repository.findOne(empId).getEmail();
+        return repository.findEmployeeById(empId).getEmail();
     }
 
     @Autowired
