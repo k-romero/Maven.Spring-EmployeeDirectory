@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DepartmentRepository extends CrudRepository<Department,Integer> {
+
+    Department findDepartmentByDeptNumber(Integer deptNumber);
+    void deleteDepartmentByDeptNumber(Integer deptNumber);
 }

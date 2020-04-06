@@ -10,20 +10,18 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JoinColumn(name = "EMPLOYEE")
+    @Column(name = "dept_number")
     private Integer deptNumber;
-
     private String deptName;
 
     @OneToOne
-    @JoinColumn(name = "MANAGER_ID")
     private Employee manager;
 
     public Department() {
     }
 
     public Department(String deptName, Integer managerId) {
-        manager = new EmployeeService().show(managerId);
+        manager = new EmployeeService().getEmployee(managerId);
         this.deptName = deptName;
     }
 

@@ -1,21 +1,20 @@
 package io.zipcoder.persistenceapp.services;
 
-import io.zipcoder.persistenceapp.controllers.EmployeeController;
 import io.zipcoder.persistenceapp.models.Department;
 import io.zipcoder.persistenceapp.models.Employee;
 import io.zipcoder.persistenceapp.repositories.DepartmentRepository;
+import io.zipcoder.persistenceapp.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Service
 public class DepartmentService {
 
     @Autowired
-    DepartmentRepository repository;
+    private DepartmentRepository repository;
 
     public Department show(Integer id){
-        return repository.findOne(id);
+        return repository.findDepartmentByDeptNumber(id);
     }
 
     public Department create(Department dept){
@@ -23,30 +22,34 @@ public class DepartmentService {
     }
 
     public Department update(Integer id, Department newDept){
-        Department originalDepartment = repository.findOne(id);
+        Department originalDepartment = repository.findDepartmentByDeptNumber(id);
         originalDepartment.setDeptName(newDept.getDeptName());
-//        originalDepartment.setManager(newDept.getManager().getId());
+        originalDepartment.setManager(newDept.getManager());
         return repository.save(originalDepartment);
     }
 
     public Boolean delete(Integer id){
-        repository.delete(id);
+        repository.deleteDepartmentByDeptNumber(id);
         return true;
     }
 
     public Department updateName(Integer id, String deptName){
-        Department original = repository.findOne(id);
+        Department original = repository.findDepartmentByDeptNumber(id);
         original.setDeptName(deptName);
         return repository.save(original);
     }
 
-    public Department updateManager(Integer id, Integer managerId){
-        EmployeeService service = new EmployeeService();
-        Department original = repository.findOne(id);
-        Employee manager = service.show(managerId);
-        original.setManager(manager);
+    @Autowired
+    private EmployeeService empService;
+
+    public Department setManager(Integer deptId, Integer managerId){
+        Department original = show(deptId);
+        original.setManager(empService.getEmployee(managerId));
         return repository.save(original);
     }
+
+
+
 
 
 }
